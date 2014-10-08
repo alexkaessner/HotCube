@@ -27,7 +27,7 @@ void setup() {
     // and an USB Camera, if there is any connected.
     // For each, different size/fps options will be prompt
     for (int i = 0; i < cameras.length; i++) {
-      println(cameras[i]);
+      println(i + ": " + cameras[i]);
     }
     
     // 1. The camera can be initialized directly using an 

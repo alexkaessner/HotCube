@@ -38,8 +38,8 @@ int buttonBgColor;
 void setup() {
   frameRate(15);
   
-  video = new Capture(this, 640, 480);
-  //video = new Capture(this, 640, 480, "USB2.0 PC CAMERA");
+  //video = new Capture(this, 640, 480);
+  video = new Capture(this, 640, 480, "USB2.0 Camera");
   video.start();
   
   opencv = new OpenCV(this, 640, 480);
@@ -196,6 +196,7 @@ void displayContoursBoundingBoxes() {
     fill(255, 0, 0, 150);
     strokeWeight(2);
     rect(r.x, r.y, r.width, r.height);
+    println("X: " + r.x + "; Y: " + r.y);
   }
 }
 
