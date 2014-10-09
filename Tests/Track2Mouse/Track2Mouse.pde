@@ -1,12 +1,12 @@
 /**
- * Image Filtering
- * This sketch will help us to adjust the filter values to optimize blob detection
+ * Track2Mouse
+ * This sketch translates the tracking data of the HotBox into a mouse input
  *
  * It uses the OpenCV for Processing library by Greg Borenstein
  * https://github.com/atduskgreg/opencv-processing
  * 
- * @author: Jordi Tost @jorditost
- * @modified: 26/09/2014
+ * @author: Kevin Schiffer @kschiffer
+ * @modified: 9/09/2014
  * 
  * University of Applied Sciences Potsdam, 2014
  */
@@ -38,7 +38,7 @@ int xInc = 0;
 int yInc = 0;
 
 void setup() {
-  frameRate(25);
+  frameRate(30);
 
   //video = new Capture(this, 640, 480);
   video = new Capture(this, 640, 480, "USB2.0 Camera");
@@ -135,7 +135,7 @@ void draw() {
   // Display contours in the lower right window
   pushMatrix();
 
-  displayContours();
+  //displayContours();
   displayContoursBoundingBoxes();
 
   popMatrix(); 
@@ -151,15 +151,13 @@ void displayImages() {
 
   pushMatrix();
   //scale(1);
-  image(src, 0, 0);
+  //image(src, 0, 0);
   popMatrix();
 
   stroke(255);
   fill(255);
-  //  text("Source", 10, 25); 
-  //  text("Pre-processed Image", src.width/2 + 10, 25); 
-  //  text("Processed Image", 10, src.height/2 + 25); 
-  //  text("Tracked Points", src.width/2 + 10, src.height/2 + 25);
+  rect(0,0,width,height);
+
 }
 
 void displayContours() {
@@ -171,7 +169,7 @@ void displayContours() {
     noFill();
     stroke(0, 255, 0);
     strokeWeight(3);
-    contour.draw();
+    //contour.draw();
   }
 }
 
