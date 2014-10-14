@@ -38,6 +38,10 @@ int blobSizeThreshold = 20;
 int blurSize = 4;
 PImage levelImage;
 
+PShape menuHeaderImage;
+PShape startGameText;
+PShape highscoresText;
+
 int xInc;
 int yInc;
 
@@ -57,7 +61,7 @@ void setup() {
     size(1280,720);
   }
   background(0);
-  gameMode = 1;
+  gameMode = 0;
   drawLevel();
   save("level.tif");
 }
@@ -73,10 +77,32 @@ void draw() {
   // MENU //
   //////////
   if (gameMode == 0){
-    background(0);
+    background(255);
     textSize(32);
-    fill(255,255,255);
-    text("MENU", width/2, 40);
+    fill(0,0,0);
+    
+    menuHeaderImage = loadShape("MenuHeader.svg");
+    shape(menuHeaderImage, (width-306)/2, 43, 306, 354);
+    
+    // START GAME BUTTON
+    ellipseMode(CORNER);
+    stroke(0);
+    strokeWeight(4);
+    fill(255);
+    ellipse(280,447,230,230);
+    startGameText = loadShape("StartGameText.svg");
+    shape(startGameText, 306, 547, 179, 38);
+    
+    // HIGHSCORE BUTTON
+    ellipseMode(CORNER);
+    stroke(0);
+    strokeWeight(4);
+    fill(255);
+    ellipse(770,447,230,230);
+    highscoresText = loadShape("HighscoresText.svg");
+    shape(highscoresText, 800, 547, 174, 38);
+    
+    //text("MENU", width/2, 40);
     if (xInc > 0) {
       arc(80, 80, 80, 80, 0, (height / yInc)*PIE, PIE);
     }
