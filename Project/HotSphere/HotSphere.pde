@@ -124,6 +124,14 @@ void draw() {
     menuHeaderImage = loadShape("GameOverHeader.svg");
     shape(menuHeaderImage, (width-590)/2, 170, 590, 75);
     
+    fill(0);
+    textSize(48);
+    textAlign(CENTER);
+    //PFont avenir;
+    //avenir = loadFont("Avenir.ttc");
+    //textFont(avenir);
+    text("23.5 sec", width/2, 380);
+    
     drawMenuButtons();
   }
   
