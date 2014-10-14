@@ -86,58 +86,12 @@ void draw() {
   if (gameMode == 0){
     background(255);
     
-    float distStartGameButton= dist(mouseX,mouseY,startGameButtonX,buttonsY);
-    float distHighscoresButton= dist(mouseX,mouseY,highscoresButtonX,buttonsY);
-    
     // HEADER GRAPHIC
     menuHeaderImage = loadShape("MenuHeader.svg");
     shape(menuHeaderImage, (width-306)/2, 43, 306, 354);
     
-    // START GAME BUTTON
-    stroke(0);
-    strokeWeight(4);
-    fill(255);
-    ellipse(startGameButtonX,buttonsY,buttonSize,buttonSize);
-      // create loading indicator
-    noStroke();
-    fill(0);
-    arc(startGameButtonX,buttonsY,buttonSize,buttonSize,radians(-90),radians(waitingStartGame-90));
-    fill(255);
-    ellipse(startGameButtonX,buttonsY,buttonSize-20,buttonSize-20);
-      // load Text SVG
-    startGameText = loadShape("StartGameText.svg");
-    shape(startGameText, 306, 547, 179, 38);
+    drawMenuButtons();
     
-    if(distStartGameButton < (buttonSize/2)) {
-      waitingStartGame+=3;
-    }else{
-      waitingStartGame=0;
-    }
-    
-    // HIGHSCORE BUTTON
-    stroke(0);
-    strokeWeight(4);
-    fill(255);
-    ellipse(highscoresButtonX,buttonsY,buttonSize,buttonSize);
-      // create loading indicator
-    noStroke();
-    fill(0);
-    arc(highscoresButtonX,buttonsY,buttonSize,buttonSize,radians(-90),radians(waitingHighscores-90));
-    fill(255);
-    ellipse(highscoresButtonX,buttonsY,buttonSize-20,buttonSize-20);
-      // load Text SVG
-    highscoresText = loadShape("HighscoresText.svg");
-    shape(highscoresText, 800, 547, 174, 38);
-    
-    if(distHighscoresButton < (buttonSize/2)) {
-      waitingHighscores+=3;
-    }else{
-      waitingHighscores=0;
-    }
-    
-    if(waitingStartGame > 360) {
-      gameMode = 1;
-    }
   }
   
   ////////////
@@ -148,10 +102,29 @@ void draw() {
     image(levelImage,0,0);
     if (get(xInc,yInc) != -1) {
       println("GAME OVER");
-      gameMode = 0;
+      gameMode = 2;
     } else {
       //println("good!");
     }
+  }
+  
+  //////////////////////
+  // GAME OVER SCREEN //
+  //////////////////////
+  if (gameMode == 2){
+    background(255);
+    
+    // add transparent level image
+    //tint(255, 25/2);
+    //levelImage = loadImage("level.tif");
+    //image(levelImage,0,0);
+    //filter(BLUR, 10);
+    
+    // HEADER GRAPHIC
+    menuHeaderImage = loadShape("GameOverHeader.svg");
+    shape(menuHeaderImage, (width-590)/2, 170, 590, 75);
+    
+    drawMenuButtons();
   }
   
     fill(255,0,0);
@@ -196,6 +169,64 @@ void drawLevel(){
   }
   filter(BLUR,10);
   filter(THRESHOLD,0.3);
+}
+
+void drawMenuButtons(){
+  
+  float distStartGameButton= dist(mouseX,mouseY,startGameButtonX,buttonsY);
+  float distHighscoresButton= dist(mouseX,mouseY,highscoresButtonX,buttonsY);
+  
+  // START GAME BUTTON
+  stroke(0);
+  strokeWeight(4);
+  fill(255);
+  ellipse(startGameButtonX,buttonsY,buttonSize,buttonSize);
+    // create loading indicator
+  noStroke();
+  fill(0);
+  arc(startGameButtonX,buttonsY,buttonSize,buttonSize,radians(-90),radians(waitingStartGame-90));
+  fill(255);
+  ellipse(startGameButtonX,buttonsY,buttonSize-20,buttonSize-20);
+    // load Text SVG
+  startGameText = loadShape("StartGameText.svg");
+  shape(startGameText, 306, 547, 179, 38);
+  
+  // HIGHSCORE BUTTON
+  stroke(0);
+  strokeWeight(4);
+  fill(255);
+  ellipse(highscoresButtonX,buttonsY,buttonSize,buttonSize);
+    // create loading indicator
+  noStroke();
+  fill(0);
+  arc(highscoresButtonX,buttonsY,buttonSize,buttonSize,radians(-90),radians(waitingHighscores-90));
+  fill(255);
+  ellipse(highscoresButtonX,buttonsY,buttonSize-20,buttonSize-20);
+    // load Text SVG
+  highscoresText = loadShape("HighscoresText.svg");
+  shape(highscoresText, 800, 547, 174, 38);
+  
+  // messure distance from buttons
+  if(distStartGameButton < (buttonSize/2)) {
+    waitingStartGame+=3;
+  }else{
+    waitingStartGame=0;
+  }
+  if(distHighscoresButton < (buttonSize/2)) {
+    waitingHighscores+=3;
+  }else{
+    waitingHighscores=0;
+  }
+  
+  // triggers if button loading is complete
+  if(waitingStartGame > 360) {
+    gameMode = 1;
+    waitingStartGame=0;
+  }
+  if(waitingHighscores > 360) {
+    //gameMode = 3;
+    waitingHighscores=0;
+  }
 }
 
 void trackPosition(){
