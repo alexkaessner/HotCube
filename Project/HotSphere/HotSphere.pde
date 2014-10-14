@@ -54,10 +54,10 @@ void setup() {
 
   size(opencv.width, opencv.height, P2D);
   } else {
-    size(1024,576);
+    size(1280,720);
   }
   background(0);
-  gameMode = 0;
+  gameMode = 1;
   drawLevel();
   save("level.tif");
 }
