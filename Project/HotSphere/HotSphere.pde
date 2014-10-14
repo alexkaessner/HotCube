@@ -134,6 +134,10 @@ void draw() {
     }else{
       waitingHighscores=0;
     }
+    
+    if(waitingStartGame > 360) {
+      gameMode = 1;
+    }
   }
   
   ////////////
@@ -144,13 +148,15 @@ void draw() {
     image(levelImage,0,0);
     if (get(xInc,yInc) != -1) {
       println("GAME OVER");
+      gameMode = 0;
     } else {
-      println("good!");
+      //println("good!");
     }
   }
   
     fill(255,0,0);
     stroke(255);
+    strokeWeight(2);
     ellipse(xInc,yInc,20,20);
 
 }
