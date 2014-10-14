@@ -2,10 +2,9 @@ int i;
 float a;
 float s;
 int r;
-float[][] values = new float[1920/3][3];
+float[][] values = new float[1280/3][3];
 void setup() {
-  size(1920,400);
-  frameRate(2000);
+  size(1280,400);
   fill(0);
   //background(255);
   for (int i = 0; i < width/3;i++){
@@ -28,11 +27,10 @@ void setup() {
 }
 
 void draw(){
-  //background(255);
-  //for (int i = 0; i < width/3; i++){
-  //  ellipse(values[i][0]*3,values[i][1],values[i][2],values[i][2]);
-  //  println(values[i][0]*3,values[i][1],values[i][2],values[i][2]);
-  //}
-    //noLoop();
+  if(get(mouseX,mouseY)!=-1){
+      println("over");
+  } else {
+      println("not over");
+  }
 
 }
