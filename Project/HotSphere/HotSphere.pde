@@ -41,6 +41,8 @@ PImage levelImage;
 PShape menuHeaderImage;
 PShape startGameText;
 PShape highscoresText;
+int waitingStartGame;
+int waitingHighscores;
 
 int xInc;
 int yInc;
@@ -78,9 +80,11 @@ void draw() {
   //////////
   if (gameMode == 0){
     background(255);
-    textSize(32);
-    fill(0,0,0);
     
+    float distStartGameButton= dist(mouseX,mouseY,395,562);
+    float distHighscoresButton= dist(mouseX,mouseY,885,562);
+    
+    // HEADER GRAPHIC
     menuHeaderImage = loadShape("MenuHeader.svg");
     shape(menuHeaderImage, (width-306)/2, 43, 306, 354);
     
@@ -90,8 +94,21 @@ void draw() {
     strokeWeight(4);
     fill(255);
     ellipse(280,447,230,230);
+      // create loading indicator
+    noStroke();
+    fill(0);
+    arc(280,447,230,230,radians(-90),radians(waitingStartGame-90));
+    fill(255);
+    ellipse(290,457,210,210);
+      // load Text SVG
     startGameText = loadShape("StartGameText.svg");
     shape(startGameText, 306, 547, 179, 38);
+    
+    if(distStartGameButton<115) {
+      waitingStartGame+=3;
+    }else{
+      waitingStartGame=0;
+    }
     
     // HIGHSCORE BUTTON
     ellipseMode(CORNER);
@@ -99,12 +116,20 @@ void draw() {
     strokeWeight(4);
     fill(255);
     ellipse(770,447,230,230);
+      // create loading indicator
+    noStroke();
+    fill(0);
+    arc(770,447,230,230,radians(-90),radians(waitingHighscores-90));
+    fill(255);
+    ellipse(780,457,210,210);
+      // load Text SVG
     highscoresText = loadShape("HighscoresText.svg");
     shape(highscoresText, 800, 547, 174, 38);
     
-    //text("MENU", width/2, 40);
-    if (xInc > 0) {
-      arc(80, 80, 80, 80, 0, (height / yInc)*PIE, PIE);
+    if(distHighscoresButton<115) {
+      waitingHighscores+=3;
+    }else{
+      waitingHighscores=0;
     }
   }
   
