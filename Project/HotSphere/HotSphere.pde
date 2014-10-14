@@ -1,12 +1,13 @@
 /**
- * Track2Mouse
- * This sketch translates the tracking data of the HotBox into a mouse input
+ * HotSphere
+ * This sketch translates the tracking data of the HotSphere Device into a input
+ * and uses these input data to control a hotwire game.
  *
  * It uses the OpenCV for Processing library by Greg Borenstein
  * https://github.com/atduskgreg/opencv-processing
  * 
- * @author: Kevin Schiffer @kschiffer
- * @modified: 13/09/2014
+ * @authors: Kevin Schiffer (@kschiffer), Alexander Käßner (@alexkaessner), Alvaro Garcia Weissenborn (@varusgarcia)
+ * @modified: 14/10/2014
  * 
  * University of Applied Sciences Potsdam, 2014
  */
