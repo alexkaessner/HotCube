@@ -36,7 +36,7 @@ int buttonColor;
 int buttonBgColor;
 
 void setup() {
-  frameRate(15);
+  frameRate(30);
   
   //video = new Capture(this, 640, 480);
   video = new Capture(this, 640, 480, "USB2.0 Camera");
