@@ -42,6 +42,10 @@ PImage levelImage;
 PShape menuHeaderImage;
 PShape startGameText;
 PShape highscoresText;
+int buttonSize = 230;
+int startGameButtonX = 395;
+int highscoresButtonX = 885;
+int buttonsY = 562;
 int waitingStartGame;
 int waitingHighscores;
 
@@ -82,52 +86,50 @@ void draw() {
   if (gameMode == 0){
     background(255);
     
-    float distStartGameButton= dist(mouseX,mouseY,395,562);
-    float distHighscoresButton= dist(mouseX,mouseY,885,562);
+    float distStartGameButton= dist(mouseX,mouseY,startGameButtonX,buttonsY);
+    float distHighscoresButton= dist(mouseX,mouseY,highscoresButtonX,buttonsY);
     
     // HEADER GRAPHIC
     menuHeaderImage = loadShape("MenuHeader.svg");
     shape(menuHeaderImage, (width-306)/2, 43, 306, 354);
     
     // START GAME BUTTON
-    ellipseMode(CORNER);
     stroke(0);
     strokeWeight(4);
     fill(255);
-    ellipse(280,447,230,230);
+    ellipse(startGameButtonX,buttonsY,buttonSize,buttonSize);
       // create loading indicator
     noStroke();
     fill(0);
-    arc(280,447,230,230,radians(-90),radians(waitingStartGame-90));
+    arc(startGameButtonX,buttonsY,buttonSize,buttonSize,radians(-90),radians(waitingStartGame-90));
     fill(255);
-    ellipse(290,457,210,210);
+    ellipse(startGameButtonX,buttonsY,buttonSize-20,buttonSize-20);
       // load Text SVG
     startGameText = loadShape("StartGameText.svg");
     shape(startGameText, 306, 547, 179, 38);
     
-    if(distStartGameButton<115) {
+    if(distStartGameButton < (buttonSize/2)) {
       waitingStartGame+=3;
     }else{
       waitingStartGame=0;
     }
     
     // HIGHSCORE BUTTON
-    ellipseMode(CORNER);
     stroke(0);
     strokeWeight(4);
     fill(255);
-    ellipse(770,447,230,230);
+    ellipse(highscoresButtonX,buttonsY,buttonSize,buttonSize);
       // create loading indicator
     noStroke();
     fill(0);
-    arc(770,447,230,230,radians(-90),radians(waitingHighscores-90));
+    arc(highscoresButtonX,buttonsY,buttonSize,buttonSize,radians(-90),radians(waitingHighscores-90));
     fill(255);
-    ellipse(780,457,210,210);
+    ellipse(highscoresButtonX,buttonsY,buttonSize-20,buttonSize-20);
       // load Text SVG
     highscoresText = loadShape("HighscoresText.svg");
     shape(highscoresText, 800, 547, 174, 38);
     
-    if(distHighscoresButton<115) {
+    if(distHighscoresButton < (buttonSize/2)) {
       waitingHighscores+=3;
     }else{
       waitingHighscores=0;
