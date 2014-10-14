@@ -1,10 +1,12 @@
-HotCube
+![Project Logo](https://raw.githubusercontent.com/alexkaessner/HotSphere/master/Graphics/_Exports/Logo.png)
+
+HotSphere
 =======
 
-A students project (1. Semester - ID) during project weeks at the University of Applied Sciences Potsdam.
+HotSphere is a students project during the project weeks in the first semester (ID) at the [University of Applied Sciences Potsdam](http://www.fh-potsdam.de). 
 
 ###Markdown Editor
-Falls ihr einen kostenlosen Markdown Editor sucht. [MacDown](http://macdown.uranusjr.com) ist da zu empfehlen. Ist ein Open Source projekt um den Mou Editor weiter zu führen (welcher nicht mehr weiterentwickelt wird).
+If you are searching for a free MarkDown Editor I can recommend [MacDown](http://macdown.uranusjr.com). It's an open source project to continue the Mou Editor (which is currently stopped in development).
 
-###Links
+###Interesting Links
 - [Geomerative](http://www.ricardmarxer.com/geomerative/) - SVG Edge Detection

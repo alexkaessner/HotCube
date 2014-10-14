@@ -1,11 +1,12 @@
-// PShape way;
+ PShape way;
+ int score=0;
 void setup()
 {
   size(600, 360);
   background(255);
-  //noStroke();
-  //way=loadShape("Untitled-1.svg");
-  stroke(0, 0, 0);
+  noStroke();
+  way=loadShape("Untitled-1.svg");
+ /* stroke(0, 0, 0);
   noFill();
   strokeWeight(60);
   beginShape();
@@ -19,21 +20,23 @@ void setup()
   curveVertex(600, 170); // the last point of curve
   curveVertex(600, 170); // is also the last control point
   endShape();
+  */
 }
 
 
-void draw()
-{
-  println(get(mouseX,mouseY));
+void draw(){
+score= mouseX/6;
+  
  
   if(get(mouseX,mouseY)!=-1){
     
-    background(0,100,255,255);
+    background(255,0,0,255);
   }
-    //else{background(255);
-  //}
+    else{background(0);
+  }
   
-  //shape(way,0,0);
-  //stroke(100);  
+  shape(way,0,0);
+  stroke(100);  
+  text("YOU ARE:"+score+"% DONE",100,100);
 }
 
