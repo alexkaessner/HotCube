@@ -43,15 +43,20 @@ PImage levelImage;
 PShape menuHeaderImage;
 PShape startGameText;
 PShape highscoresText;
+PShape backText;
 int buttonSize = 230;
 int startGameButtonX = 395;
 int highscoresButtonX = 885;
 int buttonsY = 562;
 int waitingStartGame;
 int waitingHighscores;
+<<<<<<< HEAD
 int choosingSpeed = 10;
 int finderSize = 80;
 int startingTime;
+=======
+int waitingBack;
+>>>>>>> ad06f1a43cab07d1e2cae5950ebfcbbbbf64b425
 
 int xInc;
 int yInc;
@@ -163,6 +168,54 @@ void draw() {
     drawMenuButtons();
   }
   
+  ////////////////
+  // HIGHSCORES //
+  ////////////////
+  if (gameMode == 3){
+    background(255);
+    
+    // HEADER GRAPHIC
+    menuHeaderImage = loadShape("HighscoresHeader.svg");
+    shape(menuHeaderImage, (width-627)/2, 50, 627, 75);
+    
+    fill(0);
+    textSize(48);
+    textAlign(CENTER);
+    String space = "      ";
+    String scoresList = "#1" + space + "23.5 sec" + "\n#2" + space + "23.5 sec" + "\n#3" + space + "23.5 sec" + "\n#4" + space + "23.5 sec" + "\n#5" + space + "23.5 sec";
+    text(scoresList, (width-350)/2, 160, 350, 350);
+    
+    float distBackButton= dist(mouseX,mouseY,640,613);
+  
+    // BACK BUTTON
+    stroke(0);
+    strokeWeight(4);
+    fill(255);
+    ellipse(640,613,150,150);
+      // create loading indicator
+    noStroke();
+    fill(0);
+    arc(640,613,150,150,radians(-90),radians(waitingBack-90));
+    fill(255);
+    ellipse(640,613,130,130);
+      // load Text SVG
+    backText = loadShape("BackText.svg");
+    shape(backText, 604, 596, 74, 29);
+  
+    // messure distance from buttons
+    if(distBackButton < (150/2)) {
+      waitingBack+=3;
+    }else{
+      waitingBack=0;
+    }
+   
+   // triggers if button loading is complete
+   if(waitingBack > 360) {
+    gameMode = 0;
+    waitingBack=0;
+    }
+  }
+  
     fill(255,0,0);
     stroke(255);
     strokeWeight(2);
@@ -270,7 +323,7 @@ void drawMenuButtons(){
     waitingStartGame=0;
   }
   if(waitingHighscores > 360) {
-    //gameMode = 3;
+    gameMode = 3;
     waitingHighscores=0;
   }
 }
