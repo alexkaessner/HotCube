@@ -13,7 +13,8 @@
  */
  
 int gameMode = 0;
-boolean mouseInput = true; 
+boolean readyToGame = false;
+boolean mouseInput = false; 
 import gab.opencv.*;
 import java.awt.Rectangle;
 import processing.video.*;
@@ -48,16 +49,19 @@ int highscoresButtonX = 885;
 int buttonsY = 562;
 int waitingStartGame;
 int waitingHighscores;
+int choosingSpeed = 10;
+int finderSize = 80;
+int startingTime;
 
 int xInc;
 int yInc;
 
 void setup() {
-  if (!mouseInput){
   frameRate(25);
+  if (!mouseInput){
 
-  video = new Capture(this, 640, 480);
-  //video = new Capture(this, 640, 480, "USB2.0 Camera");
+  //video = new Capture(this, 640, 480);
+  video = new Capture(this, 640, 480, "USB2.0 Camera");
   video.start();
 
   opencv = new OpenCV(this, 1024, 576);
@@ -67,10 +71,11 @@ void setup() {
   } else {
     size(1280,720);
   }
-  background(0);
+  //background(0);
   gameMode = 0;
   drawLevel();
   save("level.tif");
+  levelImage = loadImage("level.tif");
 }
 
 void draw() {
@@ -78,6 +83,8 @@ void draw() {
   if (mouseInput){
     xInc = mouseX;
     yInc = mouseY;
+  } else {
+      trackPosition();
   }
   
   //////////
@@ -98,13 +105,34 @@ void draw() {
   // INGAME //
   ////////////
   if (gameMode == 1){
-    levelImage = loadImage("level.tif");
-    image(levelImage,0,0);
-    if (get(xInc,yInc) != -1) {
-      println("GAME OVER");
-      gameMode = 2;
+    
+    if (!readyToGame){
+      image(levelImage,0,0);
+      fill(255,0,0);
+      textSize(48);
+      textAlign(CENTER);
+      text("MOVE TO STARTING POSITION",width/2, height/2);
+      fill(0,0,255);
+      stroke(0,0,255);
+      ellipse(20,height/2,finderSize,finderSize);
+      finderSize--;
+      if (finderSize <= 20) finderSize = 80;
+      if (dist(xInc,yInc,20,height/2) < 80) {
+        readyToGame = true;
+        image(levelImage,0,0);
+        println("game starts");
+        startingTime = millis();
+      }
     } else {
-      //println("good!");
+      image(levelImage,0,0);
+      displayTime(millis()-startingTime);
+      if (get(xInc,yInc) != -1) {
+        println("GAME OVER");
+        readyToGame = false;
+        gameMode = 2;
+      } else {
+        //println("good!");
+      }
     }
   }
   
@@ -142,6 +170,15 @@ void draw() {
 
 }
 
+void displayTime(int time){
+  int seconds;
+  int milliSeconds;
+  textSize(20);
+  seconds = time / 1000;
+  milliSeconds = time - seconds*1000;
+  text(seconds + ":" +nf(milliSeconds,3),width/2,100);
+}
+
 /////////////////////
 // Display Methods
 /////////////////////
@@ -149,8 +186,8 @@ void draw() {
 void displayImages() {
 
   pushMatrix();
-  //scale(1);
-  //image(src, 0, 0);
+  scale(1);
+  image(src, 0, 0);
   popMatrix();
 
   stroke(255);
@@ -160,6 +197,7 @@ void displayImages() {
 }
 
 void drawLevel(){
+  ellipse(20,height/2,80,80);
   for (int i = 0; i < width/3;i++){
     a = a + random(-40,40);
     if (a < -(height/2) + s){
@@ -216,12 +254,12 @@ void drawMenuButtons(){
   
   // messure distance from buttons
   if(distStartGameButton < (buttonSize/2)) {
-    waitingStartGame+=3;
+    waitingStartGame+=choosingSpeed;
   }else{
     waitingStartGame=0;
   }
   if(distHighscoresButton < (buttonSize/2)) {
-    waitingHighscores+=3;
+    waitingHighscores+=choosingSpeed;
   }else{
     waitingHighscores=0;
   }
@@ -309,7 +347,7 @@ void trackPosition(){
   pushMatrix();
 
   // Display images
-  //displayImages();
+  displayImages();
 
   // Display contours in the lower right window
   pushMatrix();

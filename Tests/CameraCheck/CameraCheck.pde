@@ -13,6 +13,7 @@ import processing.video.*;
 Capture cam;
 
 void setup() {
+  frameRate(30);
   size(640, 480);
 
   String[] cameras = Capture.list();
@@ -32,13 +33,13 @@ void setup() {
     
     // 1. The camera can be initialized directly using an 
     // element from the array returned by list():
-    cam = new Capture(this, cameras[0]);
+    //cam = new Capture(this, cameras[0]);
     
     // 2. CHANGE TO THIS:
     // Select the camera by its size, name and fps
     // You can check this values in the cameras list
     // Sintax: Capture(parent, requestWidth, requestHeight, cameraName, frameRate)
-    //cam = new Capture(this, 640, 480, "USB2.0 PC CAMERA");
+    cam = new Capture(this, 640, 480, "USB2.0 Camera");
     
     cam.start();     
   }      
