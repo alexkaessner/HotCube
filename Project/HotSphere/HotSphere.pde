@@ -14,7 +14,7 @@
  
 int gameMode = 0;
 boolean readyToGame = false;
-boolean mouseInput = false; 
+boolean mouseInput = true; 
 import gab.opencv.*;
 import java.awt.Rectangle;
 import processing.video.*;
@@ -50,13 +50,11 @@ int highscoresButtonX = 885;
 int buttonsY = 562;
 int waitingStartGame;
 int waitingHighscores;
-<<<<<<< HEAD
+int waitingBack;
+
 int choosingSpeed = 10;
 int finderSize = 80;
 int startingTime;
-=======
-int waitingBack;
->>>>>>> ad06f1a43cab07d1e2cae5950ebfcbbbbf64b425
 
 int xInc;
 int yInc;
@@ -204,7 +202,7 @@ void draw() {
   
     // messure distance from buttons
     if(distBackButton < (150/2)) {
-      waitingBack+=3;
+      waitingBack+=choosingSpeed;
     }else{
       waitingBack=0;
     }
