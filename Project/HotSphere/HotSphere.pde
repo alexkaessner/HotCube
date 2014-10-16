@@ -15,7 +15,7 @@
 int gameMode = 0;
 int sensitivity = 12;
 boolean readyToGame = false;
-boolean mouseInput = false; 
+boolean mouseInput = true; 
 import gab.opencv.*;
 import java.awt.Rectangle;
 import processing.video.*;
@@ -50,13 +50,15 @@ int blobSizeThreshold = 20;
 int blurSize = 4;
 PImage levelImage;
 
-PShape menuHeaderImage;
+PImage menuImage;
 PShape startGameText;
 PShape highscoresText;
 PShape backText;
-int waitingStartGame;
-int waitingHighscores;
+int waitingRepeatGame;
+int waitingStartAgain;
 int waitingBack;
+int startTextSize = 200;
+int startTextNumber = 0;
 
 int choosingSpeed = 20;
 int finderSize = 80;
@@ -115,11 +117,11 @@ void draw() {
     background(255);
     image(titleMovie,0,0);
     
-    // HEADER GRAPHIC
-    menuHeaderImage = loadShape("MenuHeader.svg");
-    shape(menuHeaderImage, (width-250)/2, 33, 250, 289); //306 354
+    drawMenuButtons();
     
-    //drawMenuButtons();
+    // HEADER GRAPHIC
+    menuImage = loadImage("Menu.png");
+    image(menuImage, (width-552)/2, 72, 552, 496); //552 496
     
   }
   
@@ -130,31 +132,53 @@ void draw() {
     
     if (!readyToGame){
       image(levelImage,0,0);
-      fill(0);
-      textSize(30);
+      fill(255,0,0);
+      textSize(startTextSize);
       textAlign(CENTER);
-      text("MOVE TO STARTING POSITION",width/2, 45);
-      fill(0,0,255);
-      stroke(0,0,255);
-      ellipse(20,height/2,finderSize,finderSize);
-      finderSize -= 3;
-      if (finderSize <= 20) finderSize = 80;
-      if (dist(xInc,yInc,20,height/2) < 10) {
-        readyToGame = true;
-        image(levelImage,0,0);
-        println("game starts");
-        startingTime = millis();
+      
+      // Ready, Set, Go! - Text Animation
+      if (startTextNumber == 0) {
+        text("STAGE "+ currentStage,width/2, height/2);
+        if (startTextSize <= 20) {
+          startTextNumber = 1;
+          startTextSize = 200;
+        }
       }
+      if (startTextNumber == 1) {
+        text("3",width/2, height/2);
+        if (startTextSize <= 20) {
+          startTextNumber = 2;
+          startTextSize = 200;
+        }
+      }
+      if (startTextNumber == 2) {
+        text("2",width/2, height/2);
+        if (startTextSize <= 20) {
+          startTextNumber = 3;
+          startTextSize = 200;
+        }
+      }
+      if (startTextNumber == 3) {
+        text("1",width/2, height/2);
+        if (startTextSize <= 20) {
+          startTextNumber = 4;
+          startTextSize = 200;
+        }
+      }
+      if (startTextNumber == 4) {
+        text("GO!",width/2, height/2);
+        if (startTextSize <= 20) {
+          xInc = 20;
+          yInc = height/2;
+          readyToGame = true;
+          startTextSize = 200;
+        }
+      }
+      startTextSize += -8;
       
     } else {
       image(levelImage,0,0);
       //displayTime(millis()-startingTime);
-
-
-      fill(0);
-      textSize(30);
-      textAlign(CENTER);
-      text("Stage "+ currentStage,100, 45);
       
       printLevelWait++;
       if (xInc > width-5){
@@ -170,7 +194,8 @@ void draw() {
         println("GAME OVER");
         currentStage = 1;
         readyToGame = false;
-        gameMode = 2;
+        gameMode = 0;
+        startTextNumber = 0;
       } else {
         //println("good!");
       }
@@ -190,8 +215,8 @@ void draw() {
     //filter(BLUR, 10);
     
     // HEADER GRAPHIC
-    menuHeaderImage = loadShape("GameOverHeader.svg");
-    shape(menuHeaderImage, (width-590)/2, 170, 590, 75);
+    //menuHeaderImage = loadShape("GameOverHeader.svg");
+    //shape(menuHeaderImage, (width-590)/2, 170, 590, 75);
     
     fill(0);
     textSize(48);
@@ -211,8 +236,8 @@ void draw() {
     background(255);
     
     // HEADER GRAPHIC
-    menuHeaderImage = loadShape("HighscoresHeader.svg");
-    shape(menuHeaderImage, (width-627)/2, 50, 627, 75);
+    //menuHeaderImage = loadShape("HighscoresHeader.svg");
+    //shape(menuHeaderImage, (width-627)/2, 50, 627, 75);
     
     fill(0);
     textSize(48);

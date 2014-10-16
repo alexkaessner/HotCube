@@ -25,9 +25,6 @@ void drawLevel(int difficulty, String name){
   }
   filter(BLUR,10);
   filter(THRESHOLD,0.3);
-  fill(255);
-  stroke(0);
-  rect(0,0,width,paddingTop);
   
   save(name+".tif");
   levelImage = loadImage(name+".tif");
