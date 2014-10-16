@@ -70,7 +70,7 @@ void trackPosition(){
   pushMatrix();
 
   // Display images
-  displayImages(src);
+  displayImages();
 
   // Display contours in the lower right window
   pushMatrix();
@@ -111,16 +111,23 @@ void displayContoursBoundingBoxes() {
     stroke(255, 0, 0);
     fill(255, 0, 0, 150);
     strokeWeight(2);
-    rect(r.x, r.y, r.width, r.height);
+    //rect(r.x, r.y, r.width, r.height);
     println("X: " + r.x + "; Y: " + r.y);
-    x = r.x - 347;
-    y = r.y - 212;
+    x = r.x - 280;
+    y = r.y - 170;
     println(x,y);
-    if (x > 10 || x < -10) xInc = xInc - x / 4;
-    if (y > 10 || y < -10) yInc = yInc - y / 4;
+    
+    if (x > 10 || x < -10) xInc = xInc - x / sensitivity;
+    if (y > 10 || y < -10) yInc = yInc - y / sensitivity;
+    
+    // let's not move out of the window!
+    if (xInc > width) xInc = width;
+    if (yInc > height) yInc = height;
+    if (xInc < 0) xInc = 0;
+    if (yInc < 0) yInc = 0;
     
     fill(0);
-    ellipse(xInc,yInc,20,20);
+    //ellipse(xInc,yInc,20,20);
   }
 }
 
@@ -132,7 +139,7 @@ void displayImages() {
 
   pushMatrix();
   scale(1);
-  image(src, 0, 0);
+  //image(src, 0, 0);
   popMatrix();
 
   //stroke(255);

@@ -12,7 +12,8 @@
  * University of Applied Sciences Potsdam, 2014
  */
  
-int gameMode = -1;
+int gameMode = 0;
+int sensitivity = 12;
 boolean readyToGame = false;
 boolean mouseInput = false; 
 import gab.opencv.*;
@@ -56,8 +57,8 @@ int choosingSpeed = 10;
 int finderSize = 80;
 int startingTime;
 
-int xInc;
-int yInc;
+int xInc = 500;
+int yInc= 500;
 
 void setup() {
   frameRate(25);
@@ -67,15 +68,15 @@ void setup() {
     video = new Capture(this, 640, 480, "USB2.0 Camera");
     video.start();
   
-    opencv = new OpenCV(this, 1024, 576);
+    opencv = new OpenCV(this, 640, 480);
     contours = new ArrayList<Contour>();
   
     //size(opencv.width, opencv.height, P2D);
   }
-  //background(0);
-  //drawLevel();
-  //save("level.tif");
-  //levelImage = loadImage("level.tif");
+  background(0);
+  drawLevel();
+  save("level.tif");
+  levelImage = loadImage("level.tif");
 }
 
 void draw() {
@@ -87,7 +88,7 @@ void draw() {
       trackPosition();
   }
   if (gameMode == -1){
-   //print("debug mode");
+    background(255);
   }
   //////////
   // MENU //
@@ -182,7 +183,7 @@ void draw() {
     String scoresList = "#1" + space + "23.5 sec" + "\n#2" + space + "23.5 sec" + "\n#3" + space + "23.5 sec" + "\n#4" + space + "23.5 sec" + "\n#5" + space + "23.5 sec";
     text(scoresList, (width-350)/2, 160, 350, 350);
     
-    float distBackButton= dist(mouseX,mouseY,640,613);
+    float distBackButton= dist(xInc,yInc,640,613);
   
     // BACK BUTTON
     stroke(0);
@@ -213,10 +214,10 @@ void draw() {
     }
   }
   
-    //fill(255,0,0);
-    //stroke(255);
-    //strokeWeight(2);
-    //ellipse(xInc,yInc,20,20);
+    fill(255,0,0);
+    stroke(255);
+    strokeWeight(2);
+    ellipse(xInc,yInc,20,20);
 }
 
 void displayTime(int time){
@@ -252,8 +253,8 @@ void drawLevel(){
 
 void drawMenuButtons(){
   
-  float distStartGameButton= dist(mouseX,mouseY,startGameButtonX,buttonsY);
-  float distHighscoresButton= dist(mouseX,mouseY,highscoresButtonX,buttonsY);
+  float distStartGameButton= dist(xInc,yInc,startGameButtonX,buttonsY);
+  float distHighscoresButton= dist(xInc,yInc,highscoresButtonX,buttonsY);
   
   // START GAME BUTTON
   stroke(0);
