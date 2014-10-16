@@ -15,12 +15,15 @@
 int gameMode = 0;
 int sensitivity = 12;
 boolean readyToGame = false;
-boolean mouseInput = true; 
+boolean mouseInput = false; 
 import gab.opencv.*;
 import java.awt.Rectangle;
 import processing.video.*;
 
+PFont Avenir;
+
 PImage [] animation = new PImage [5];
+PImage [] animationInvert = new PImage [5];
 int currentFrame = 1;
 
 Movie titleMovie;
@@ -81,9 +84,13 @@ void setup() {
   titleMovie.loop();
   
   for (int i=1; i < 5; i++) {
+   String imageNameInvert = "frame" +i+".png";
+   animationInvert[i] = loadImage(imageNameInvert);
+   animationInvert[i].filter(INVERT);
+  }
+  for (int i=1; i < 5; i++){
    String imageName = "frame" +i+".png";
    animation[i] = loadImage(imageName);
-   animation[i].filter(INVERT);
   }
   if (!mouseInput){
   
@@ -96,6 +103,8 @@ void setup() {
     //size(opencv.width, opencv.height, P2D);
   }
   //drawLevel(4,"level");
+  Avenir = createFont("Avenir LT Std", 32);
+  textFont(Avenir);
 }
 
 void draw() {
@@ -104,7 +113,9 @@ void draw() {
     xInc = mouseX;
     yInc = mouseY;
   } else {
+    if (readyToGame || gameMode == 0){
       trackPosition();
+    }
   }
   if (gameMode == -1){
     drawLevel(4,"three");
@@ -145,27 +156,13 @@ void draw() {
         }
       }
       if (startTextNumber == 1) {
-        text("3",width/2, height/2);
+        text("HOLD STILL!",width/2, height/2);
         if (startTextSize <= 20) {
           startTextNumber = 2;
           startTextSize = 200;
         }
       }
       if (startTextNumber == 2) {
-        text("2",width/2, height/2);
-        if (startTextSize <= 20) {
-          startTextNumber = 3;
-          startTextSize = 200;
-        }
-      }
-      if (startTextNumber == 3) {
-        text("1",width/2, height/2);
-        if (startTextSize <= 20) {
-          startTextNumber = 4;
-          startTextSize = 200;
-        }
-      }
-      if (startTextNumber == 4) {
         text("GO!",width/2, height/2);
         if (startTextSize <= 20) {
           xInc = 20;
@@ -184,6 +181,8 @@ void draw() {
       if (xInc > width-5){
         println("success!");
         drawLevel(currentStage++,"level");
+        readyToGame = false;
+        startTextNumber = 0;
         
         xInc = 20;
         yInc = height/2;
@@ -192,7 +191,6 @@ void draw() {
       }
       if (get(xInc,yInc) == -16777216) {
         println("GAME OVER");
-        currentStage = 1;
         readyToGame = false;
         gameMode = 0;
         startTextNumber = 0;
@@ -281,20 +279,24 @@ void draw() {
     //stroke(255);
     //strokeWeight(2);
     //ellipse(xInc,yInc,20,20);
-        PVector v1 = new PVector(lastX,lastY);
-    PVector v2 = new PVector(xInc,yInc);
-    pushMatrix();
-    imageWidth = animation[currentFrame].width;
-    imageHeight = animation[currentFrame].height;
-    translate(xInc + imageWidth/2,yInc + imageHeight/2);
-    rotation = getAngle(lastX,lastY,xInc,yInc);
-    println("lastX: "+lastX+"; lastY: "+lastY+"; x: "+xInc+" y:"+yInc+"; rotation: "+rotation);
-    rotate(rotation);
-    translate(-imageWidth/2,-imageHeight/2);
-    //translate(-animation[currentFrame].width/2,-animation[currentFrame].height/2);
-    image(animation[currentFrame],0,0);
+    if (readyToGame || gameMode == 0){
+      pushMatrix();
+      imageWidth = animation[currentFrame].width;
+      imageHeight = animation[currentFrame].height;
+      translate(xInc + imageWidth/2,yInc + imageHeight/2);
+      rotation = getAngle(lastX,lastY,xInc,yInc);
+      println("lastX: "+lastX+"; lastY: "+lastY+"; x: "+xInc+" y:"+yInc+"; rotation: "+rotation);
+      rotate(rotation);
+      translate(-imageWidth/2,-imageHeight/2);
+      if (gameMode == 0) image(animationInvert[currentFrame],0,0);
+      else image(animation[currentFrame],0,0);
+      popMatrix();
+    } else {
+      image(animation[currentFrame],20,height/2);
+    }
+    
+    
     //rotate(degrees(-rotation));
-    popMatrix();
     currentFrame++;
     if (currentFrame >= 5){
       currentFrame = 1 ;
