@@ -31,9 +31,11 @@ Capture video;
 PImage src, preProcessedImage, processedImage, contoursImage;
 ArrayList<Contour> contours;
 
-float contrast = 1.35;
+int paddingTop = 60;
+int currentStage = 1;
+float contrast = 0.66; //was 1.35
 int brightness = 0;
-int threshold = 75;
+int threshold = 82; // was 75
 boolean useAdaptiveThreshold = false; // use basic thresholding
 int thresholdBlockSize = 489;
 int thresholdConstant = 45;
@@ -45,24 +47,22 @@ PShape menuHeaderImage;
 PShape startGameText;
 PShape highscoresText;
 PShape backText;
-int buttonSize = 230;
-int startGameButtonX = 395;
-int highscoresButtonX = 885;
-int buttonsY = 562;
 int waitingStartGame;
 int waitingHighscores;
 int waitingBack;
 
-int choosingSpeed = 10;
+int choosingSpeed = 20;
 int finderSize = 80;
 int startingTime;
+int endingTime;
+int printLevelWait = 0;
 
 int xInc = 500;
 int yInc= 500;
 
 void setup() {
   frameRate(25);
-  size(1280,720);
+  size(1024,640);
   if (!mouseInput){
   
     video = new Capture(this, 640, 480, "USB2.0 Camera");
@@ -73,10 +73,7 @@ void setup() {
   
     //size(opencv.width, opencv.height, P2D);
   }
-  background(0);
-  drawLevel();
-  save("level.tif");
-  levelImage = loadImage("level.tif");
+  //drawLevel(4,"level");
 }
 
 void draw() {
@@ -88,17 +85,18 @@ void draw() {
       trackPosition();
   }
   if (gameMode == -1){
-    background(255);
+    drawLevel(4,"three");
+    noLoop();
   }
   //////////
   // MENU //
-  //////////
+  //////////s
   if (gameMode == 0){
     background(255);
     
     // HEADER GRAPHIC
     menuHeaderImage = loadShape("MenuHeader.svg");
-    shape(menuHeaderImage, (width-306)/2, 43, 306, 354);
+    shape(menuHeaderImage, (width-250)/2, 33, 250, 289); //306 354
     
     drawMenuButtons();
     
@@ -111,26 +109,45 @@ void draw() {
     
     if (!readyToGame){
       image(levelImage,0,0);
-      fill(255,0,0);
-      textSize(48);
+      fill(0);
+      textSize(30);
       textAlign(CENTER);
-      text("MOVE TO STARTING POSITION",width/2, height/2);
+      text("MOVE TO STARTING POSITION",width/2, 45);
       fill(0,0,255);
       stroke(0,0,255);
       ellipse(20,height/2,finderSize,finderSize);
-      finderSize--;
+      finderSize -= 3;
       if (finderSize <= 20) finderSize = 80;
-      if (dist(xInc,yInc,20,height/2) < 80) {
+      if (dist(xInc,yInc,20,height/2) < 10) {
         readyToGame = true;
         image(levelImage,0,0);
         println("game starts");
         startingTime = millis();
       }
+      
     } else {
       image(levelImage,0,0);
-      displayTime(millis()-startingTime);
-      if (get(xInc,yInc) != -1) {
+      //displayTime(millis()-startingTime);
+
+
+      fill(0);
+      textSize(30);
+      textAlign(CENTER);
+      text("Stage "+ currentStage,100, 45);
+      
+      printLevelWait++;
+      if (xInc > width-5){
+        println("success!");
+        drawLevel(currentStage++,"level");
+        
+        xInc = 20;
+        yInc = height/2;
+        endingTime = millis();
+        
+      }
+      if (get(xInc,yInc) == -16777216) {
         println("GAME OVER");
+        currentStage = 1;
         readyToGame = false;
         gameMode = 2;
       } else {
@@ -220,92 +237,4 @@ void draw() {
     ellipse(xInc,yInc,20,20);
 }
 
-void displayTime(int time){
-  int seconds;
-  int milliSeconds;
-  textSize(20);
-  seconds = time / 1000;
-  milliSeconds = time - seconds*1000;
-  text(seconds + ":" +nf(milliSeconds,3),width/2,100);
-}
-
-
-void drawLevel(){
-  ellipse(20,height/2,80,80);
-  for (int i = 0; i < width/3;i++){
-    a = a + random(-40,40);
-    if (a < -(height/2) + s){
-      a = a + random(0,40);
-    }
-    if (a > height/2 - s){
-      a = a + random(-40,0);
-    }
-    s = random(30,60);
-    values[i][0] = i;
-    values[i][1] = height/2+a;
-    values[i][2] = s;
-    //println(i +": "+ values[1]);
-    ellipse(values[i][0]*3,values[i][1],values[i][2],values[i][2]);
-  }
-  filter(BLUR,10);
-  filter(THRESHOLD,0.3);
-}
-
-void drawMenuButtons(){
-  
-  float distStartGameButton= dist(xInc,yInc,startGameButtonX,buttonsY);
-  float distHighscoresButton= dist(xInc,yInc,highscoresButtonX,buttonsY);
-  
-  // START GAME BUTTON
-  stroke(0);
-  strokeWeight(4);
-  fill(255);
-  ellipse(startGameButtonX,buttonsY,buttonSize,buttonSize);
-    // create loading indicator
-  noStroke();
-  fill(0);
-  arc(startGameButtonX,buttonsY,buttonSize,buttonSize,radians(-90),radians(waitingStartGame-90));
-  fill(255);
-  ellipse(startGameButtonX,buttonsY,buttonSize-20,buttonSize-20);
-    // load Text SVG
-  startGameText = loadShape("StartGameText.svg");
-  shape(startGameText, 306, 547, 179, 38);
-  
-  // HIGHSCORE BUTTON
-  stroke(0);
-  strokeWeight(4);
-  fill(255);
-  ellipse(highscoresButtonX,buttonsY,buttonSize,buttonSize);
-    // create loading indicator
-  noStroke();
-  fill(0);
-  arc(highscoresButtonX,buttonsY,buttonSize,buttonSize,radians(-90),radians(waitingHighscores-90));
-  fill(255);
-  ellipse(highscoresButtonX,buttonsY,buttonSize-20,buttonSize-20);
-    // load Text SVG
-  highscoresText = loadShape("HighscoresText.svg");
-  shape(highscoresText, 800, 547, 174, 38);
-  
-  // messure distance from buttons
-  if(distStartGameButton < (buttonSize/2)) {
-    waitingStartGame+=choosingSpeed;
-  }else{
-    waitingStartGame=0;
-  }
-  if(distHighscoresButton < (buttonSize/2)) {
-    waitingHighscores+=choosingSpeed;
-  }else{
-    waitingHighscores=0;
-  }
-  
-  // triggers if button loading is complete
-  if(waitingStartGame > 360) {
-    gameMode = 1;
-    waitingStartGame=0;
-  }
-  if(waitingHighscores > 360) {
-    gameMode = 3;
-    waitingHighscores=0;
-  }
-}
 

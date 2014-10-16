@@ -112,10 +112,9 @@ void displayContoursBoundingBoxes() {
     fill(255, 0, 0, 150);
     strokeWeight(2);
     //rect(r.x, r.y, r.width, r.height);
-    println("X: " + r.x + "; Y: " + r.y);
+    //println("X: " + r.x + "; Y: " + r.y);
     x = r.x - 280;
     y = r.y - 170;
-    println(x,y);
     
     if (x > 10 || x < -10) xInc = xInc - x / sensitivity;
     if (y > 10 || y < -10) yInc = yInc - y / sensitivity;
