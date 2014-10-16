@@ -57,6 +57,8 @@ PShape backText;
 int waitingRepeatGame;
 int waitingStartAgain;
 int waitingBack;
+int startTextSize = 200;
+int startTextNumber = 0;
 
 int choosingSpeed = 20;
 int finderSize = 80;
@@ -105,7 +107,7 @@ void draw() {
   }
   //////////
   // MENU //
-  //////////s
+  //////////
   if (gameMode == 0){
     background(255);
     image(titleMovie,0,0);
@@ -125,31 +127,53 @@ void draw() {
     
     if (!readyToGame){
       image(levelImage,0,0);
-      fill(0);
-      textSize(30);
+      fill(255,0,0);
+      textSize(startTextSize);
       textAlign(CENTER);
-      text("MOVE TO STARTING POSITION",width/2, 45);
-      fill(0,0,255);
-      stroke(0,0,255);
-      ellipse(20,height/2,finderSize,finderSize);
-      finderSize -= 3;
-      if (finderSize <= 20) finderSize = 80;
-      if (dist(xInc,yInc,20,height/2) < 10) {
-        readyToGame = true;
-        image(levelImage,0,0);
-        println("game starts");
-        startingTime = millis();
+      
+      // Ready, Set, Go! - Text Animation
+      if (startTextNumber == 0) {
+        text("STAGE "+ currentStage,width/2, height/2);
+        if (startTextSize <= 20) {
+          startTextNumber = 1;
+          startTextSize = 200;
+        }
       }
+      if (startTextNumber == 1) {
+        text("3",width/2, height/2);
+        if (startTextSize <= 20) {
+          startTextNumber = 2;
+          startTextSize = 200;
+        }
+      }
+      if (startTextNumber == 2) {
+        text("2",width/2, height/2);
+        if (startTextSize <= 20) {
+          startTextNumber = 3;
+          startTextSize = 200;
+        }
+      }
+      if (startTextNumber == 3) {
+        text("1",width/2, height/2);
+        if (startTextSize <= 20) {
+          startTextNumber = 4;
+          startTextSize = 200;
+        }
+      }
+      if (startTextNumber == 4) {
+        text("GO!",width/2, height/2);
+        if (startTextSize <= 20) {
+          xInc = 20;
+          yInc = height/2;
+          readyToGame = true;
+          startTextSize = 200;
+        }
+      }
+      startTextSize += -8;
       
     } else {
       image(levelImage,0,0);
       //displayTime(millis()-startingTime);
-
-
-      fill(0);
-      textSize(30);
-      textAlign(CENTER);
-      text("Stage "+ currentStage,100, 45);
       
       printLevelWait++;
       if (xInc > width-5){
@@ -166,6 +190,7 @@ void draw() {
         currentStage = 1;
         readyToGame = false;
         gameMode = 0;
+        startTextNumber = 0;
       } else {
         //println("good!");
       }
