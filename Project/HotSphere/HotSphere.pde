@@ -7,7 +7,7 @@
  * https://github.com/atduskgreg/opencv-processing
  * 
  * @authors: Kevin Schiffer (@kschiffer), Alexander Käßner (@alexkaessner), Alvaro Garcia Weissenborn (@varusgarcia)
- * @modified: 14/10/2014
+ * @modified: 17/10/2014
  * 
  * University of Applied Sciences Potsdam, 2014
  */
@@ -51,12 +51,8 @@ int blurSize = 4;
 PImage levelImage;
 
 PImage menuImage;
-PShape startGameText;
-PShape highscoresText;
-PShape backText;
 int waitingRepeatGame;
 int waitingStartAgain;
-int waitingBack;
 int startTextSize = 200;
 int startTextNumber = 0;
 
@@ -105,6 +101,7 @@ void draw() {
     drawLevel(4,"three");
     noLoop();
   }
+  
   //////////
   // MENU //
   //////////
@@ -117,7 +114,6 @@ void draw() {
     // HEADER GRAPHIC
     menuImage = loadImage("Menu.png");
     image(menuImage, (width-552)/2, 72, 552, 496); //552 496
-    
   }
   
   ////////////
@@ -173,7 +169,6 @@ void draw() {
       
     } else {
       image(levelImage,0,0);
-      //displayTime(millis()-startingTime);
       
       printLevelWait++;
       if (xInc > width-5){
@@ -182,7 +177,6 @@ void draw() {
         
         xInc = 20;
         yInc = height/2;
-        endingTime = millis();
         
       }
       if (get(xInc,yInc) == -16777216) {
@@ -197,90 +191,11 @@ void draw() {
     }
   }
   
-  //////////////////////
-  // GAME OVER SCREEN //
-  //////////////////////
-  if (gameMode == 2){
-    background(255);
-    
-    // add transparent level image
-    //tint(255, 25/2);
-    //levelImage = loadImage("level.tif");
-    //image(levelImage,0,0);
-    //filter(BLUR, 10);
-    
-    // HEADER GRAPHIC
-    //menuHeaderImage = loadShape("GameOverHeader.svg");
-    //shape(menuHeaderImage, (width-590)/2, 170, 590, 75);
-    
-    fill(0);
-    textSize(48);
-    textAlign(CENTER);
-    //PFont avenir;
-    //avenir = loadFont("Avenir.ttc");
-    //textFont(avenir);
-    text("23.5 sec", width/2, 380);
-    
-    drawMenuButtons();
+  image(animation[currentFrame],xInc,yInc);
+  currentFrame++;
+  if (currentFrame >= 5){
+    currentFrame = 1 ;
   }
-  
-  ////////////////
-  // HIGHSCORES //
-  ////////////////
-  if (gameMode == 3){
-    background(255);
-    
-    // HEADER GRAPHIC
-    //menuHeaderImage = loadShape("HighscoresHeader.svg");
-    //shape(menuHeaderImage, (width-627)/2, 50, 627, 75);
-    
-    fill(0);
-    textSize(48);
-    textAlign(CENTER);
-    String space = "      ";
-    String scoresList = "#1" + space + "23.5 sec" + "\n#2" + space + "23.5 sec" + "\n#3" + space + "23.5 sec" + "\n#4" + space + "23.5 sec" + "\n#5" + space + "23.5 sec";
-    text(scoresList, (width-350)/2, 160, 350, 350);
-    
-    float distBackButton= dist(xInc,yInc,640,613);
-  
-    // BACK BUTTON
-    stroke(0);
-    strokeWeight(4);
-    fill(255);
-    ellipse(640,613,150,150);
-      // create loading indicator
-    noStroke();
-    fill(0);
-    arc(640,613,150,150,radians(-90),radians(waitingBack-90));
-    fill(255);
-    ellipse(640,613,130,130);
-      // load Text SVG
-    backText = loadShape("BackText.svg");
-    shape(backText, 604, 596, 74, 29);
-  
-    // messure distance from buttons
-    if(distBackButton < (150/2)) {
-      waitingBack+=choosingSpeed;
-    }else{
-      waitingBack=0;
-    }
-   
-   // triggers if button loading is complete
-   if(waitingBack > 360) {
-    gameMode = 0;
-    waitingBack=0;
-    }
-  }
-  
-    //fill(255,0,0);
-    //stroke(255);
-    //strokeWeight(2);
-    //ellipse(xInc,yInc,20,20);
-    image(animation[currentFrame],xInc,yInc);
-    currentFrame++;
-    if (currentFrame >= 5){
-      currentFrame = 1 ;
-    }
 }
 
 void movieEvent(Movie m) {
