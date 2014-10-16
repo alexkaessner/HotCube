@@ -19,7 +19,7 @@ void drawMenuButtons(){
   arc(startGameButtonX,buttonsY,buttonSize,buttonSize,radians(-90),radians(waitingStartGame-90));
   fill(255);
   ellipse(startGameButtonX,buttonsY,buttonSize-20,buttonSize-20);
-    // load Text SVG
+  // load Text SVG
   startGameText = loadShape("StartGameText.svg");
   shape(startGameText, startGameButtonX-88, buttonsY-20, 179, 38);
   
