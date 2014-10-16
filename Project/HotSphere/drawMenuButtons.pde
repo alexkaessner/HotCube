@@ -32,7 +32,7 @@ void drawMenuButtons(){
   
   // triggers if button loading is complete
   if(waitingRepeatGame > 320) {
-    drawLevel(currentStage,"level");
+    //drawLevel(currentStage,"level");
     gameMode = 1;
     waitingRepeatGame = 0;
   }

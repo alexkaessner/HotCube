@@ -102,7 +102,7 @@ void setup() {
 
     //size(opencv.width, opencv.height, P2D);
   }
-  //drawLevel(4,"level");
+  drawLevel(1, "level");
   Avenir = createFont("Avenir LT Std", 32);
   textFont(Avenir);
 }
