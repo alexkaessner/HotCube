@@ -66,6 +66,11 @@ int printLevelWait = 0;
 
 int xInc = 500;
 int yInc= 500;
+int lastX;
+int lastY;
+int imageWidth;
+int imageHeight;
+float rotation = 0;
 
 void setup() {
   frameRate(25);
@@ -105,7 +110,7 @@ void draw() {
   }
   //////////
   // MENU //
-  //////////s
+  //////////
   if (gameMode == 0){
     background(255);
     image(titleMovie,0,0);
@@ -251,7 +256,20 @@ void draw() {
     //stroke(255);
     //strokeWeight(2);
     //ellipse(xInc,yInc,20,20);
-    image(animation[currentFrame],xInc,yInc);
+        PVector v1 = new PVector(lastX,lastY);
+    PVector v2 = new PVector(xInc,yInc);
+    pushMatrix();
+    imageWidth = animation[currentFrame].width;
+    imageHeight = animation[currentFrame].height;
+    translate(xInc + imageWidth/2,yInc + imageHeight/2);
+    rotation = getAngle(lastX,lastY,xInc,yInc);
+    println("lastX: "+lastX+"; lastY: "+lastY+"; x: "+xInc+" y:"+yInc+"; rotation: "+rotation);
+    rotate(rotation);
+    translate(-imageWidth/2,-imageHeight/2);
+    //translate(-animation[currentFrame].width/2,-animation[currentFrame].height/2);
+    image(animation[currentFrame],0,0);
+    //rotate(degrees(-rotation));
+    popMatrix();
     currentFrame++;
     if (currentFrame >= 5){
       currentFrame = 1 ;
@@ -260,5 +278,12 @@ void draw() {
 
 void movieEvent(Movie m) {
   m.read();
+}
+
+float getAngle (int x1, int y1, int x2, int y2)
+{
+  int dx = x2 - x1;
+  int dy = y2 - y1;
+  return atan2(dy,dx);
 }
 
