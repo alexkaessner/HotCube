@@ -54,8 +54,8 @@ PImage menuImage;
 PShape startGameText;
 PShape highscoresText;
 PShape backText;
-int waitingStartGame;
-int waitingHighscores;
+int waitingRepeatGame;
+int waitingStartAgain;
 int waitingBack;
 
 int choosingSpeed = 20;
@@ -110,11 +110,11 @@ void draw() {
     background(255);
     image(titleMovie,0,0);
     
+    drawMenuButtons();
+    
     // HEADER GRAPHIC
     menuImage = loadImage("Menu.png");
     image(menuImage, (width-552)/2, 72, 552, 496); //552 496
-    
-    //drawMenuButtons();
     
   }
   
