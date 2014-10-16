@@ -165,7 +165,7 @@ void draw() {
         println("GAME OVER");
         currentStage = 1;
         readyToGame = false;
-        gameMode = 2;
+        gameMode = 0;
       } else {
         //println("good!");
       }
