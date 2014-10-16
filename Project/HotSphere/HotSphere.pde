@@ -15,7 +15,7 @@
 int gameMode = 0;
 int sensitivity = 12;
 boolean readyToGame = false;
-boolean mouseInput = false; 
+boolean mouseInput = true; 
 import gab.opencv.*;
 import java.awt.Rectangle;
 import processing.video.*;
@@ -50,7 +50,7 @@ int blobSizeThreshold = 20;
 int blurSize = 4;
 PImage levelImage;
 
-PShape menuHeaderImage;
+PImage menuImage;
 PShape startGameText;
 PShape highscoresText;
 PShape backText;
@@ -111,8 +111,8 @@ void draw() {
     image(titleMovie,0,0);
     
     // HEADER GRAPHIC
-    menuHeaderImage = loadShape("MenuHeader.svg");
-    shape(menuHeaderImage, (width-250)/2, 33, 250, 289); //306 354
+    menuImage = loadImage("Menu.png");
+    image(menuImage, (width-552)/2, 72, 552, 496); //552 496
     
     //drawMenuButtons();
     
@@ -185,8 +185,8 @@ void draw() {
     //filter(BLUR, 10);
     
     // HEADER GRAPHIC
-    menuHeaderImage = loadShape("GameOverHeader.svg");
-    shape(menuHeaderImage, (width-590)/2, 170, 590, 75);
+    //menuHeaderImage = loadShape("GameOverHeader.svg");
+    //shape(menuHeaderImage, (width-590)/2, 170, 590, 75);
     
     fill(0);
     textSize(48);
@@ -206,8 +206,8 @@ void draw() {
     background(255);
     
     // HEADER GRAPHIC
-    menuHeaderImage = loadShape("HighscoresHeader.svg");
-    shape(menuHeaderImage, (width-627)/2, 50, 627, 75);
+    //menuHeaderImage = loadShape("HighscoresHeader.svg");
+    //shape(menuHeaderImage, (width-627)/2, 50, 627, 75);
     
     fill(0);
     textSize(48);
