@@ -56,6 +56,11 @@ int waitingStartAgain;
 int startTextSize = 200;
 int startTextNumber = 0;
 
+boolean gameOverAnimation=false;
+int fadeGameOverRed = 0;
+int fadeGameOverBlack = 0;
+
+
 int choosingSpeed = 20;
 int finderSize = 80;
 int startingTime;
@@ -179,16 +184,47 @@ void draw() {
         yInc = height/2;
         
       }
+      
+      ///////////////
+      // GAME OVER //
+      ///////////////
       if (get(xInc,yInc) == -16777216) {
         println("GAME OVER");
+        gameOverAnimation = true;
+      }
+      if (gameOverAnimation == true){
+        fill(255,0,0,fadeGameOverRed);
+        rect(0,0,width,height);
+        fadeGameOverRed += 10;
+        
+        fill(0);
+        textSize(100);
+        text("GAME OVER",width/2, height/2);
+        
+        if(fadeGameOverRed >= 255){
+          fadeGameOverRed = 255;
+        }
+      }
+        
+    }
+    
+    if (fadeGameOverRed == 255){
+        fill(0,0,0,fadeGameOverBlack);
+        rect(0,0,width,height);
+        fadeGameOverBlack += 20;
+        
+        if(fadeGameOverBlack >= 255){
+          fadeGameOverBlack = 255;
+        }
+    }
+    
+    if (fadeGameOverBlack == 255){
         currentStage = 1;
         readyToGame = false;
         gameMode = 0;
         startTextNumber = 0;
-      } else {
-        //println("good!");
-      }
     }
+    
   }
   
   image(animation[currentFrame],xInc,yInc);
@@ -197,7 +233,7 @@ void draw() {
     currentFrame = 1 ;
   }
 }
-
+  
 void movieEvent(Movie m) {
   m.read();
 }
