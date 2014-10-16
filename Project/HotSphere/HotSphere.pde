@@ -15,7 +15,7 @@
 int gameMode = 0;
 int sensitivity = 12;
 boolean readyToGame = false;
-boolean mouseInput = false; 
+boolean mouseInput = true; 
 import gab.opencv.*;
 import java.awt.Rectangle;
 import processing.video.*;
@@ -49,6 +49,7 @@ PShape highscoresText;
 PShape backText;
 int waitingStartGame;
 int waitingHighscores;
+int waitingNextLevel;
 int waitingBack;
 
 int choosingSpeed = 20;
@@ -170,7 +171,7 @@ void draw() {
     
     // HEADER GRAPHIC
     menuHeaderImage = loadShape("GameOverHeader.svg");
-    shape(menuHeaderImage, (width-590)/2, 170, 590, 75);
+    shape(menuHeaderImage, (width-590)/2, 130, 590, 75);
     
     fill(0);
     textSize(48);
@@ -178,9 +179,9 @@ void draw() {
     //PFont avenir;
     //avenir = loadFont("Avenir.ttc");
     //textFont(avenir);
-    text("23.5 sec", width/2, 380);
+    text("23.5 sec", width/2, 355);
     
-    drawMenuButtons();
+    drawGameOverButtons();
   }
   
   ////////////////
@@ -200,35 +201,7 @@ void draw() {
     String scoresList = "#1" + space + "23.5 sec" + "\n#2" + space + "23.5 sec" + "\n#3" + space + "23.5 sec" + "\n#4" + space + "23.5 sec" + "\n#5" + space + "23.5 sec";
     text(scoresList, (width-350)/2, 160, 350, 350);
     
-    float distBackButton= dist(xInc,yInc,640,613);
-  
-    // BACK BUTTON
-    stroke(0);
-    strokeWeight(4);
-    fill(255);
-    ellipse(640,613,150,150);
-      // create loading indicator
-    noStroke();
-    fill(0);
-    arc(640,613,150,150,radians(-90),radians(waitingBack-90));
-    fill(255);
-    ellipse(640,613,130,130);
-      // load Text SVG
-    backText = loadShape("BackText.svg");
-    shape(backText, 604, 596, 74, 29);
-  
-    // messure distance from buttons
-    if(distBackButton < (150/2)) {
-      waitingBack+=choosingSpeed;
-    }else{
-      waitingBack=0;
-    }
-   
-   // triggers if button loading is complete
-   if(waitingBack > 360) {
-    gameMode = 0;
-    waitingBack=0;
-    }
+    drawBackButton();
   }
   
     fill(255,0,0);
@@ -237,4 +210,119 @@ void draw() {
     ellipse(xInc,yInc,20,20);
 }
 
+
+void drawBackButton(){
+  float distBackButton= dist(xInc,yInc,640,613);
+  
+  // BACK BUTTON
+  stroke(0);
+  strokeWeight(4);
+  fill(255);
+  ellipse(640,613,150,150);
+    // create loading indicator
+  noStroke();
+  fill(0);
+  arc(640,613,150,150,radians(-90),radians(waitingBack-90));
+  fill(255);
+  ellipse(640,613,130,130);
+    // load Text SVG
+  backText = loadShape("BackText.svg");
+  shape(backText, 604, 596, 74, 29);
+  
+  // messure distance from buttons
+  if(distBackButton < (150/2)) {
+    waitingBack+=choosingSpeed;
+  }else{
+    waitingBack=0;
+  }
+  
+  // triggers if button loading is complete
+  if(waitingBack > 360) {
+    gameMode = 0;
+    waitingBack=0;
+  }
+}
+
+void drawGameOverButtons(){
+  
+  float distNextLevelButton= dist(xInc,yInc,290,buttonsY);
+  float distTryAgainButton= dist(xInc,yInc,640,buttonsY);
+  float distHighscoresButton= dist(xInc,yInc,highscoresButtonX+105,buttonsY);
+  
+  // NEXT LEVEL BUTTON
+  stroke(0);
+  strokeWeight(4);
+  fill(255);
+  ellipse(290,buttonsY,buttonSize,buttonSize);
+    // create loading indicator
+  noStroke();
+  fill(0);
+  arc(290,buttonsY,buttonSize,buttonSize,radians(-90),radians(waitingNextLevel-90));
+  fill(255);
+  ellipse(290,buttonsY,buttonSize-20,buttonSize-20);
+    // load Text SVG
+  startGameText = loadShape("NextLevelText.svg");
+  shape(startGameText, 205, 547, 167, 38);
+  
+  // TRY AGAIN BUTTON
+  stroke(0);
+  strokeWeight(4);
+  fill(255);
+  ellipse(640,buttonsY,buttonSize,buttonSize);
+    // create loading indicator
+  noStroke();
+  fill(0);
+  arc(640,buttonsY,buttonSize,buttonSize,radians(-90),radians(waitingStartGame-90));
+  fill(255);
+  ellipse(640,buttonsY,buttonSize-20,buttonSize-20);
+    // load Text SVG
+  startGameText = loadShape("TryAgainText.svg");
+  shape(startGameText, 564, 547, 147, 38);
+  
+  // HIGHSCORE BUTTON
+  stroke(0);
+  strokeWeight(4);
+  fill(255);
+  ellipse(highscoresButtonX+105,buttonsY,buttonSize,buttonSize);
+    // create loading indicator
+  noStroke();
+  fill(0);
+  arc(highscoresButtonX+105,buttonsY,buttonSize,buttonSize,radians(-90),radians(waitingHighscores-90));
+  fill(255);
+  ellipse(highscoresButtonX+105,buttonsY,buttonSize-20,buttonSize-20);
+    // load Text SVG
+  highscoresText = loadShape("HighscoresText.svg");
+  shape(highscoresText, 903, 547, 174, 38);
+  
+  // messure distance from buttons
+  if(distNextLevelButton < (buttonSize/2)) {
+    waitingNextLevel+=choosingSpeed;
+  }else{
+    waitingNextLevel=0;
+  }
+  if(distTryAgainButton < (buttonSize/2)) {
+    waitingStartGame+=choosingSpeed;
+  }else{
+    waitingStartGame=0;
+  }
+  if(distHighscoresButton < (buttonSize/2)) {
+    waitingHighscores+=choosingSpeed;
+  }else{
+    waitingHighscores=0;
+  }
+  
+  // triggers if button loading is complete
+  if(waitingNextLevel > 360) {
+    gameMode = 1;
+    waitingNextLevel=0;
+  }
+  if(waitingStartGame > 360) {
+    gameMode = 1;
+    waitingStartGame=0;
+  }
+  if(waitingHighscores > 360) {
+    gameMode = 3;
+    waitingHighscores=0;
+  }
+}
 
