@@ -53,6 +53,7 @@ int blobSizeThreshold = 20;
 int blurSize = 4;
 PImage levelImage;
 
+color thatRed = color(210, 67, 53);
 PImage menuImage;
 int waitingRepeatGame;
 int waitingStartAgain;
@@ -143,7 +144,7 @@ void draw() {
 
     if (!readyToGame) {
       image(levelImage, 0, 0);
-      fill(255, 0, 0);
+      fill(thatRed);
       textSize(startTextSize);
       textAlign(CENTER);
 
@@ -194,7 +195,7 @@ void draw() {
         gameOverAnimation = true;
       }
       if (gameOverAnimation == true) {
-        fill(255, 0, 0, fadeGameOverRed);
+        fill(210,67,53, fadeGameOverRed);
         rect(0, 0, width, height);
         fadeGameOverRed += 10;
 

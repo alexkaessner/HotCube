@@ -10,12 +10,12 @@ void drawMenuButtons(){
   
   // REPEAT BUTTON
   noStroke();
-  fill(255,0,0);
+  fill(thatRed);
   arc(repeatButtonX,buttonsY,buttonSize,buttonSize,radians(-90),radians(waitingRepeatGame-90));
   
   // START AGAIN BUTTON
   noStroke();
-  fill(255,0,0);
+  fill(thatRed);
   arc(startAgainButtonX,buttonsY,buttonSize,buttonSize,radians(-200),radians(waitingStartAgain-200));
   
   // messure distance from buttons
