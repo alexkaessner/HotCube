@@ -219,10 +219,12 @@ void draw() {
     }
 
     if (fadeGameOverBlack == 255) {
-      currentStage = 1;
       readyToGame = false;
+      gameOverAnimation = false;
       gameMode = 0;
       startTextNumber = 0;
+      fadeGameOverRed = 0;
+      fadeGameOverBlack = 0;
     } else {
       //println("good!");
     }
@@ -234,7 +236,7 @@ if (readyToGame || gameMode == 0) {
   imageHeight = animation[currentFrame].height;
   translate(xInc + imageWidth/2, yInc + imageHeight/2);
   rotation = getAngle(lastX, lastY, xInc, yInc);
-  println("lastX: "+lastX+"; lastY: "+lastY+"; x: "+xInc+" y:"+yInc+"; rotation: "+rotation);
+  //println("lastX: "+lastX+"; lastY: "+lastY+"; x: "+xInc+" y:"+yInc+"; rotation: "+rotation);
   rotate(rotation);
   translate(-imageWidth/2, -imageHeight/2);
   if (gameMode == 0) image(animationInvert[currentFrame], 0, 0);
