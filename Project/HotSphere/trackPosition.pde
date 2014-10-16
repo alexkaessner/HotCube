@@ -115,6 +115,8 @@ void displayContoursBoundingBoxes() {
     //println("X: " + r.x + "; Y: " + r.y);
     x = r.x - 280;
     y = r.y - 170;
+    lastX = xInc;
+    lastY = yInc;
     
     if (x > 10 || x < -10) xInc = xInc - x / sensitivity;
     if (y > 10 || y < -10) yInc = yInc - y / sensitivity;
