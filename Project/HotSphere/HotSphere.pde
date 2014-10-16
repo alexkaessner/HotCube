@@ -7,15 +7,15 @@
  * https://github.com/atduskgreg/opencv-processing
  * 
  * @authors: Kevin Schiffer (@kschiffer), Alexander Käßner (@alexkaessner), Alvaro Garcia Weissenborn (@varusgarcia)
- * @modified: 14/10/2014
+ * @modified: 17/10/2014
  * 
  * University of Applied Sciences Potsdam, 2014
  */
- 
+
 int gameMode = 0;
 int sensitivity = 12;
 boolean readyToGame = false;
-boolean mouseInput = false; 
+boolean mouseInput = true; 
 import gab.opencv.*;
 import java.awt.Rectangle;
 import processing.video.*;
@@ -54,14 +54,14 @@ int blurSize = 4;
 PImage levelImage;
 
 PImage menuImage;
-PShape startGameText;
-PShape highscoresText;
-PShape backText;
 int waitingRepeatGame;
 int waitingStartAgain;
-int waitingBack;
 int startTextSize = 200;
 int startTextNumber = 0;
+
+boolean gameOverAnimation=false;
+int fadeGameOverRed = 0;
+int fadeGameOverBlack = 0;
 
 int choosingSpeed = 20;
 int finderSize = 80;
@@ -79,27 +79,27 @@ float rotation = 0;
 
 void setup() {
   frameRate(25);
-  size(1024,640);
+  size(1024, 640);
   titleMovie = new Movie(this, "title.mov");
   titleMovie.loop();
-  
+
   for (int i=1; i < 5; i++) {
-   String imageNameInvert = "frame" +i+".png";
-   animationInvert[i] = loadImage(imageNameInvert);
-   animationInvert[i].filter(INVERT);
+    String imageNameInvert = "frame" +i+".png";
+    animationInvert[i] = loadImage(imageNameInvert);
+    animationInvert[i].filter(INVERT);
   }
-  for (int i=1; i < 5; i++){
-   String imageName = "frame" +i+".png";
-   animation[i] = loadImage(imageName);
+  for (int i=1; i < 5; i++) {
+    String imageName = "frame" +i+".png";
+    animation[i] = loadImage(imageName);
   }
-  if (!mouseInput){
-  
+  if (!mouseInput) {
+
     video = new Capture(this, 640, 480, "USB2.0 Camera");
     video.start();
-  
+
     opencv = new OpenCV(this, 640, 480);
     contours = new ArrayList<Contour>();
-  
+
     //size(opencv.width, opencv.height, P2D);
   }
   //drawLevel(4,"level");
@@ -109,61 +109,61 @@ void setup() {
 
 void draw() {
 
-  if (mouseInput){
+  if (mouseInput) {
     xInc = mouseX;
     yInc = mouseY;
   } else {
-    if (readyToGame || gameMode == 0){
+    if (readyToGame || gameMode == 0) {
       trackPosition();
     }
   }
-  if (gameMode == -1){
-    drawLevel(4,"three");
+  if (gameMode == -1) {
+    drawLevel(4, "three");
     noLoop();
   }
+
   //////////
   // MENU //
   //////////
-  if (gameMode == 0){
+  if (gameMode == 0) {
     background(255);
-    image(titleMovie,0,0);
-    
+    image(titleMovie, 0, 0);
+
     drawMenuButtons();
-    
+
     // HEADER GRAPHIC
     menuImage = loadImage("Menu.png");
     image(menuImage, (width-552)/2, 72, 552, 496); //552 496
-    
   }
-  
+
   ////////////
   // INGAME //
   ////////////
-  if (gameMode == 1){
-    
-    if (!readyToGame){
-      image(levelImage,0,0);
-      fill(255,0,0);
+  if (gameMode == 1) {
+
+    if (!readyToGame) {
+      image(levelImage, 0, 0);
+      fill(255, 0, 0);
       textSize(startTextSize);
       textAlign(CENTER);
-      
+
       // Ready, Set, Go! - Text Animation
       if (startTextNumber == 0) {
-        text("STAGE "+ currentStage,width/2, height/2);
+        text("STAGE "+ currentStage, width/2, height/2);
         if (startTextSize <= 20) {
           startTextNumber = 1;
           startTextSize = 200;
         }
       }
       if (startTextNumber == 1) {
-        text("HOLD STILL!",width/2, height/2);
+        text("HOLD STILL!", width/2, height/2);
         if (startTextSize <= 20) {
           startTextNumber = 2;
           startTextSize = 200;
         }
       }
       if (startTextNumber == 2) {
-        text("GO!",width/2, height/2);
+        text("GO!", width/2, height/2);
         if (startTextSize <= 20) {
           xInc = 20;
           yInc = height/2;
@@ -172,135 +172,84 @@ void draw() {
         }
       }
       startTextSize += -8;
-      
     } else {
-      image(levelImage,0,0);
-      //displayTime(millis()-startingTime);
-      
+      image(levelImage, 0, 0);
+
       printLevelWait++;
-      if (xInc > width-5){
+      if (xInc > width-5) {
         println("success!");
-        drawLevel(currentStage++,"level");
+        drawLevel(currentStage++, "level");
         readyToGame = false;
         startTextNumber = 0;
-        
+
         xInc = 20;
         yInc = height/2;
-        endingTime = millis();
-        
       }
-      if (get(xInc,yInc) == -16777216) {
+
+      ///////////////
+      // GAME OVER //
+      ///////////////
+      if (get(xInc, yInc) == -16777216) {
         println("GAME OVER");
-        readyToGame = false;
-        gameMode = 0;
-        startTextNumber = 0;
-      } else {
-        //println("good!");
+        gameOverAnimation = true;
+      }
+      if (gameOverAnimation == true) {
+        fill(255, 0, 0, fadeGameOverRed);
+        rect(0, 0, width, height);
+        fadeGameOverRed += 10;
+
+        fill(0);
+        textSize(100);
+        text("GAME OVER", width/2, height/2);
+
+        if (fadeGameOverRed >= 255) {
+          fadeGameOverRed = 255;
+        }
       }
     }
-  }
-  
-  //////////////////////
-  // GAME OVER SCREEN //
-  //////////////////////
-  if (gameMode == 2){
-    background(255);
-    
-    // add transparent level image
-    //tint(255, 25/2);
-    //levelImage = loadImage("level.tif");
-    //image(levelImage,0,0);
-    //filter(BLUR, 10);
-    
-    // HEADER GRAPHIC
-    //menuHeaderImage = loadShape("GameOverHeader.svg");
-    //shape(menuHeaderImage, (width-590)/2, 170, 590, 75);
-    
-    fill(0);
-    textSize(48);
-    textAlign(CENTER);
-    //PFont avenir;
-    //avenir = loadFont("Avenir.ttc");
-    //textFont(avenir);
-    text("23.5 sec", width/2, 380);
-    
-    drawMenuButtons();
-  }
-  
-  ////////////////
-  // HIGHSCORES //
-  ////////////////
-  if (gameMode == 3){
-    background(255);
-    
-    // HEADER GRAPHIC
-    //menuHeaderImage = loadShape("HighscoresHeader.svg");
-    //shape(menuHeaderImage, (width-627)/2, 50, 627, 75);
-    
-    fill(0);
-    textSize(48);
-    textAlign(CENTER);
-    String space = "      ";
-    String scoresList = "#1" + space + "23.5 sec" + "\n#2" + space + "23.5 sec" + "\n#3" + space + "23.5 sec" + "\n#4" + space + "23.5 sec" + "\n#5" + space + "23.5 sec";
-    text(scoresList, (width-350)/2, 160, 350, 350);
-    
-    float distBackButton= dist(xInc,yInc,640,613);
-  
-    // BACK BUTTON
-    stroke(0);
-    strokeWeight(4);
-    fill(255);
-    ellipse(640,613,150,150);
-      // create loading indicator
-    noStroke();
-    fill(0);
-    arc(640,613,150,150,radians(-90),radians(waitingBack-90));
-    fill(255);
-    ellipse(640,613,130,130);
-      // load Text SVG
-    backText = loadShape("BackText.svg");
-    shape(backText, 604, 596, 74, 29);
-  
-    // messure distance from buttons
-    if(distBackButton < (150/2)) {
-      waitingBack+=choosingSpeed;
-    }else{
-      waitingBack=0;
+
+    if (fadeGameOverRed == 255) {
+      fill(0, 0, 0, fadeGameOverBlack);
+      rect(0, 0, width, height);
+      fadeGameOverBlack += 20;
+
+      if (fadeGameOverBlack >= 255) {
+        fadeGameOverBlack = 255;
+      }
     }
-   
-   // triggers if button loading is complete
-   if(waitingBack > 360) {
-    gameMode = 0;
-    waitingBack=0;
-    }
-  }
-  
-    //fill(255,0,0);
-    //stroke(255);
-    //strokeWeight(2);
-    //ellipse(xInc,yInc,20,20);
-    if (readyToGame || gameMode == 0){
-      pushMatrix();
-      imageWidth = animation[currentFrame].width;
-      imageHeight = animation[currentFrame].height;
-      translate(xInc + imageWidth/2,yInc + imageHeight/2);
-      rotation = getAngle(lastX,lastY,xInc,yInc);
-      println("lastX: "+lastX+"; lastY: "+lastY+"; x: "+xInc+" y:"+yInc+"; rotation: "+rotation);
-      rotate(rotation);
-      translate(-imageWidth/2,-imageHeight/2);
-      if (gameMode == 0) image(animationInvert[currentFrame],0,0);
-      else image(animation[currentFrame],0,0);
-      popMatrix();
+
+    if (fadeGameOverBlack == 255) {
+      currentStage = 1;
+      readyToGame = false;
+      gameMode = 0;
+      startTextNumber = 0;
     } else {
-      image(animation[currentFrame],20,height/2);
+      //println("good!");
     }
-    
-    
-    //rotate(degrees(-rotation));
-    currentFrame++;
-    if (currentFrame >= 5){
-      currentFrame = 1 ;
-    }
+  }
+
+if (readyToGame || gameMode == 0) {
+  pushMatrix();
+  imageWidth = animation[currentFrame].width;
+  imageHeight = animation[currentFrame].height;
+  translate(xInc + imageWidth/2, yInc + imageHeight/2);
+  rotation = getAngle(lastX, lastY, xInc, yInc);
+  println("lastX: "+lastX+"; lastY: "+lastY+"; x: "+xInc+" y:"+yInc+"; rotation: "+rotation);
+  rotate(rotation);
+  translate(-imageWidth/2, -imageHeight/2);
+  if (gameMode == 0) image(animationInvert[currentFrame], 0, 0);
+  else image(animation[currentFrame], 0, 0);
+  popMatrix();
+} else {
+  image(animation[currentFrame], 20, height/2);
+}
+
+
+//rotate(degrees(-rotation));
+currentFrame++;
+if (currentFrame >= 5) {
+  currentFrame = 1 ;
+}
 }
 
 void movieEvent(Movie m) {
@@ -311,6 +260,6 @@ float getAngle (int x1, int y1, int x2, int y2)
 {
   int dx = x2 - x1;
   int dy = y2 - y1;
-  return atan2(dy,dx);
+  return atan2(dy, dx);
 }
 
