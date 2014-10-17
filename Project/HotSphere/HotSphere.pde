@@ -80,7 +80,7 @@ float rotation = 0;
 
 void setup() {
   frameRate(25);
-  size(1024, 640);
+  size(1024, 768);
   titleMovie = new Movie(this, "title.mov");
   titleMovie.loop();
 

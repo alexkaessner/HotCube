@@ -196,7 +196,7 @@ void displayContoursBoundingBoxes() {
     if (x > 10 || x < -10) xInc = xInc - x / 4;
     if (y > 10 || y < -10) yInc = yInc - y / 4;
     
-    robot.mouseMove(500+xInc, 500+yInc);
+    //robot.mouseMove(500+xInc, 500+yInc);
   }
 }
 
