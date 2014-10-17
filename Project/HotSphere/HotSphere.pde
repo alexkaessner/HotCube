@@ -244,7 +244,7 @@ if (readyToGame || gameMode == 0) {
   
   int repeatButtonX = 316;
   int startAgainButtonX = 708;
-  int buttonsY = 488;
+  int buttonsY = 552;
   
   float distRepeatButton= dist(xInc,yInc,repeatButtonX,buttonsY);
   float distStartAgainButton= dist(xInc,yInc,startAgainButtonX,buttonsY);
