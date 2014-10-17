@@ -190,7 +190,7 @@ void draw() {
       ///////////////
       // GAME OVER //
       ///////////////
-      if (get(xInc, yInc) == -16777216) {
+      if (get(xInc+5, yInc+5) == -16777216 || get(xInc+25, yInc+25) == -16777216 || get(xInc, yInc+25) == -16777216 || get(xInc+25, yInc) == -16777216) {
         println("GAME OVER");
         gameOverAnimation = true;
       }
