@@ -240,7 +240,14 @@ if (readyToGame || gameMode == 0) {
   //println("lastX: "+lastX+"; lastY: "+lastY+"; x: "+xInc+" y:"+yInc+"; rotation: "+rotation);
   rotate(rotation);
   translate(-imageWidth/2, -imageHeight/2);
-  if (gameMode == 0) image(animationInvert[currentFrame], 0, 0);
+  
+  int repeatButtonX = 316;
+  int startAgainButtonX = 708;
+  int buttonsY = 488;
+  
+  float distRepeatButton= dist(xInc,yInc,repeatButtonX,buttonsY);
+  float distStartAgainButton= dist(xInc,yInc,startAgainButtonX,buttonsY);
+  if (gameMode == 0 && distRepeatButton > (160/2) || gameMode == 0 && distStartAgainButton > (160/2) ) image(animationInvert[currentFrame], 0, 0);
   else image(animation[currentFrame], 0, 0);
   popMatrix();
 } else {
