@@ -134,7 +134,7 @@ void draw() {
 
     // HEADER GRAPHIC
     menuImage = loadImage("Menu.png");
-    image(menuImage, (width-552)/2, 72, 552, 496); //552 496
+    image(menuImage, (width-552)/2, (height-496)/2, 552, 496); //552 496
   }
 
   ////////////

@@ -3,7 +3,7 @@ void drawMenuButtons(){
   int buttonSize = 160;
   int repeatButtonX = 316;
   int startAgainButtonX = 708;
-  int buttonsY = 488;
+  int buttonsY = 552;
   
   float distRepeatButton= dist(xInc,yInc,repeatButtonX,buttonsY);
   float distStartAgainButton= dist(xInc,yInc,startAgainButtonX,buttonsY);
@@ -13,7 +13,7 @@ void drawMenuButtons(){
   fill(thatRed);
   arc(repeatButtonX,buttonsY,buttonSize,buttonSize,radians(-90),radians(waitingRepeatGame-90));
   
-  // START AGAIN BUTTON
+  // START AGAIN BUTTON 
   noStroke();
   fill(thatRed);
   arc(startAgainButtonX,buttonsY,buttonSize,buttonSize,radians(-200),radians(waitingStartAgain-200));
