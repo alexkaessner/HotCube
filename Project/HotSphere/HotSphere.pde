@@ -15,7 +15,7 @@
 int gameMode = 0;
 int sensitivity = 12;
 boolean readyToGame = false;
-boolean mouseInput = true; 
+boolean mouseInput = false; 
 import gab.opencv.*;
 import java.awt.Rectangle;
 import processing.video.*;
@@ -177,7 +177,7 @@ void draw() {
       image(levelImage, 0, 0);
 
       printLevelWait++;
-      if (xInc > width-5) {
+      if (xInc > width-5 && !gameOverAnimation) {
         println("success!");
         drawLevel(currentStage++, "level");
         readyToGame = false;
