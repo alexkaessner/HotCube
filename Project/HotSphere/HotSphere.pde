@@ -195,6 +195,7 @@ void draw() {
         gameOverAnimation = true;
       }
       if (gameOverAnimation == true) {
+        noStroke();
         fill(210,67,53, fadeGameOverRed);
         rect(0, 0, width, height);
         fadeGameOverRed += 10;
@@ -247,7 +248,7 @@ if (readyToGame || gameMode == 0) {
   
   float distRepeatButton= dist(xInc,yInc,repeatButtonX,buttonsY);
   float distStartAgainButton= dist(xInc,yInc,startAgainButtonX,buttonsY);
-  if (gameMode == 0 && distRepeatButton > (160/2) || gameMode == 0 && distStartAgainButton > (160/2) ) image(animationInvert[currentFrame], 0, 0);
+  if (gameMode == 0 && distRepeatButton > (160/2) && distStartAgainButton > (160/2) ) image(animationInvert[currentFrame], 0, 0);
   else image(animation[currentFrame], 0, 0);
   popMatrix();
 } else {
