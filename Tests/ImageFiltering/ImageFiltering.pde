@@ -38,8 +38,8 @@ int buttonBgColor;
 void setup() {
   frameRate(30);
   
-  //video = new Capture(this, 640, 480);
-  video = new Capture(this, 640, 480, "USB2.0 Camera");
+  video = new Capture(this, 640, 480);
+  //video = new Capture(this, 640, 480, "USB2.0 Camera");  // use this to specify the cam to use
   video.start();
   
   opencv = new OpenCV(this, 640, 480);

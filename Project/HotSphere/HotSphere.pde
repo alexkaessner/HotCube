@@ -15,7 +15,7 @@
 int gameMode = 0;
 int sensitivity = 12;
 boolean readyToGame = false;
-boolean mouseInput = false; 
+boolean mouseInput = true;  // set to false to use camera as input
 import gab.opencv.*;
 import java.awt.Rectangle;
 import processing.video.*;
